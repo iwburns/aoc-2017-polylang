@@ -66,4 +66,3 @@ mod tests {
         assert_eq!(total, 9);
     }
 }
-
