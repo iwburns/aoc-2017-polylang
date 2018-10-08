@@ -11,4 +11,6 @@ use `rustc` by itself if you'd like, but it's usually simpler to just use `cargo
 
 To run any of these solutions, `cd` into the solution directory (for example `day-1/problem-1`) and then
 simply run `cargo run` to both compile and run the binary.
+
+To run any tests that may have been written for a given solution, run `cargo test`.
  
