@@ -7,7 +7,7 @@ struct Point {
 #[derive(Debug, Copy, Clone)]
 struct MemBlock {
     point: Point,
-    address: usize,
+    value: u32,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -21,25 +21,29 @@ enum Move {
 fn main() {
     let input = 347991;
     let memory = build_memory_space(input);
-    let dist = find_distance_to_mid(&memory, input);
-    println!("{:?}", dist);
+    println!("{:?}", memory.iter().last().unwrap().value);
 }
 
 fn build_memory_space(size: usize) -> Vec<MemBlock> {
     let mut memory = Vec::with_capacity(size as usize);
 
-    memory.push(MemBlock { point: Point { x: 0, y: 0 }, address: 1 });
+    memory.push(MemBlock { point: Point { x: 0, y: 0 }, value: 1 });
 
     let mut curr_move = Move::Right { total: 1, moves_left: 1 };
 
-    for i in 1..size {
+    for i in 1.. {
         let MemBlock { point: curr_point, .. } = memory[i - 1];
 
-        let (next_move, next_point) = get_next_move_and_point(curr_move, curr_point);
+        let (next_move, point) = get_next_move_and_point(curr_move, curr_point);
+        let value = get_adjacent_points_sum(point, &memory);
 
-        memory.push(MemBlock { point: next_point, address: i + 1 });
+        memory.push(MemBlock { point, value });
 
         curr_move = next_move;
+
+        if value as usize > size {
+            break;
+        }
     }
 
     memory
@@ -96,45 +100,18 @@ fn get_next_move_and_point(curr_move: Move, curr_point: Point) -> (Move, Point) 
     }
 }
 
-fn find_distance_to_mid(memory: &Vec<MemBlock>, address: usize) -> i32 {
-    let point = memory[address - 1].point;
-    point.x.abs() + point.y.abs()
+fn get_adjacent_points_sum(p: Point, memory: &Vec<MemBlock>) -> u32 {
+    let Point { x, y } = p;
+
+    memory.iter().fold(0, |acc, block| {
+        let Point { x: bx, y: by} = block.point;
+
+        if (bx - x).abs() < 2 && (by - y).abs() < 2 {
+            acc + block.value
+        } else {
+            acc
+        }
+    })
 }
 
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test1() {
-        let input = 1;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
-        assert_eq!(dist, 0);
-    }
-
-    #[test]
-    fn test2() {
-        let input = 12;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
-        assert_eq!(dist, 3);
-    }
-
-    #[test]
-    fn test3() {
-        let input = 23;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
-        assert_eq!(dist, 2);
-    }
-
-    #[test]
-    fn test4() {
-        let input = 1024;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
-        assert_eq!(dist, 31);
-    }
-}
 
