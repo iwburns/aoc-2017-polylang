@@ -20,8 +20,7 @@ enum Move {
 
 fn main() {
     let input = 347991;
-    let memory = build_memory_space(input);
-    let dist = find_distance_to_mid(&memory, input);
+    let dist = find_distance_to_mid(input);
     println!("{:?}", dist);
 }
 
@@ -96,8 +95,9 @@ fn get_next_move_and_point(curr_move: Move, curr_point: Point) -> (Move, Point) 
     }
 }
 
-fn find_distance_to_mid(memory: &Vec<MemBlock>, address: usize) -> i32 {
-    let point = memory[address - 1].point;
+fn find_distance_to_mid(input: usize) -> i32 {
+    let memory = build_memory_space(input);
+    let point = memory[memory.len() - 1].point;
     point.x.abs() + point.y.abs()
 }
 
@@ -108,32 +108,28 @@ mod test {
     #[test]
     fn test1() {
         let input = 1;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
+        let dist = find_distance_to_mid(input);
         assert_eq!(dist, 0);
     }
 
     #[test]
     fn test2() {
         let input = 12;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
+        let dist = find_distance_to_mid(input);
         assert_eq!(dist, 3);
     }
 
     #[test]
     fn test3() {
         let input = 23;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
+        let dist = find_distance_to_mid(input);
         assert_eq!(dist, 2);
     }
 
     #[test]
     fn test4() {
         let input = 1024;
-        let memory = build_memory_space(input);
-        let dist = find_distance_to_mid(&memory, input);
+        let dist = find_distance_to_mid(input);
         assert_eq!(dist, 31);
     }
 }
