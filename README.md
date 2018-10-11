@@ -14,4 +14,4 @@ Then, have fun and start hacking away!
 
 Finally, when you're done with a solution/problem: commit your changes and submit Pull Requests back to this repo to contribute your changes to the group.
 
-Rinse, repeat, and earn a t-shirt!
+Rinse, repeat, and earn a t-shirt during Hacktoberfest!
